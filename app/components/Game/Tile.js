@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'gray',
     flex: 1,
+    alignSelf: 'stretch',
     borderRadius: 5,
     margin: 5
   }
