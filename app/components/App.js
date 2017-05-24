@@ -2,39 +2,42 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  Button
 } from 'react-native';
+
+import GlobalStyles from '../globalStyles';
+import Game from './Game/index';
 
 class App extends Component {
   constructor(props) {
     super(props);
-  }
 
-  componentDidMount() {
-    this.props.getProps();
+    this.state = {
+      begin: false
+    };
+
+    this.pressed = false;
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        {(this.props.defaultProps !== undefined)
-          ? (<Text style={styles.message}>{this.props.defaultProps}</Text>)
-          : (<Text style={styles.message}>{'Props are loading...'}</Text>)}
+      <View style={[GlobalStyles.wrapper, {backgroundColor: 'orange'}]}>
+        {!this.state.begin
+        ? <Button
+          onPress={() => {
+            if (!this.pressed) {
+              this.pressed = true;
+              this.setState({
+                begin: true
+              });
+            }
+          }}
+          title={'Begin !'}
+        />
+        : <Game />}
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  message: {
-    fontSize: 30,
-    padding: 10
-  }
-});
 
 export default App;
