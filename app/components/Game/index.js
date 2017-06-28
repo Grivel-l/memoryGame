@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import _ from 'lodash';
 
 import Tile from '../../containers/Game/tile';
 import GlobalStyle from '../../globalStyles';
@@ -33,6 +34,29 @@ class Game extends Component {
   componentDidUpdate(previousProps, previousState) {
     if (this.state.level !== previousState.level) {
       this.launchTurn();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.pressedTiles.length !== nextProps.pressedTiles.length) {
+      if (nextProps.pressedTiles.length >= Object.keys(this.state.highlights).length) {
+        let allFind = true;
+        Object.keys(this.state.highlights).map(event => {
+          if (!_.find(nextProps.pressedTiles, event2 => event2 === event)) {
+            allFind = false;
+          }
+        });
+
+        if (allFind) {
+          this.tilesHighlighted = 0;
+          this.setState({
+            level: this.state.level + 1,
+            tilesNbr: (this.state.level + 1) % 2 === 0 ? this.state.tilesNbr + 1 : this.state.tilesNbr,
+            launched: false,
+            highlights: {}
+          });
+        }
+      }
     }
   }
 
@@ -105,7 +129,6 @@ class Game extends Component {
   }
 
   render() {
-    console.log('This.props', this.props);
     return (
       <View style={styles.wrapper}>
         {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
