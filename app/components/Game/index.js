@@ -8,53 +8,74 @@ import {
 import Tile from './Tile';
 import GlobalStyle from '../../globalStyles';
 
-const HIGHLIGHT_DURATION = 500;
-
+const HIGHLIGHT_DURATION = 1600;
 class Game extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       level: 1,
-      highlights: [false]
+      tilesNbr: 2,
+      highlights: {},
+      tiles: []
     };
+
+    this.tilesHighlighted = 0;
+
+    // this.highlightTiles = this.highlightTiles.bind(this);
+    this.renderTiles = this.renderTiles.bind(this);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.level !== nextState.level) {
-      const highlights = [];
-      for (let i = 0; i < nextState.level; i += 1) {
-        highlights.push(false);
-      }
-
-      this.setState({highlights});
-    }
+  componentWillMount() {
+    this.launchTurn();
   }
 
   componentDidUpdate(previousProps, previousState) {
-    if (previousState.highlights.length !== this.state.highlights.length) {
-      this.highlightTiles();
+    if (this.state.level !== previousState.level) {
+      this.launchTurn();
     }
   }
 
-  componentDidMount() {
-    this.highlightTiles();
+  launchTurn() {
+    const highlights = {};
+    const getHighlights = () => {
+      highlights[`${this.getRandomNbr(0, this.state.tilesNbr - 1)}${this.getRandomNbr(0, this.state.tilesNbr - 1)}`] = false;
+      if (Object.keys(highlights).length < this.state.level) {
+        getHighlights();
+      }
+    };
+    getHighlights();
+
+    this.setState({highlights}, () => {
+      this.highlightTiles();
+    });
+  }
+
+  getRandomNbr(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   highlightTiles() {
     setTimeout(() => {
       const highlights = this.state.highlights;
-      highlights[0] = true;
-      this.setState({highlights});
+      highlights[Object.keys(highlights)[this.tilesHighlighted]] = true;
+      this.setState({highlights}, () => {
+        if (this.tilesHighlighted < Object.keys(this.state.highlights).length) {
+          this.tilesHighlighted += 1;
+          this.highlightTiles();
+        }
+      });
     }, HIGHLIGHT_DURATION);
   }
 
   renderEachTile(j) {
     const tiles = [];
-    for (let i = 0; i < this.state.level; i += 1) {
+    for (let i = 0; i < this.state.tilesNbr; i += 1) {
       tiles.push(
         <Tile
-          highlight={this.state.highlights[i]}
+          highlight={this.state.highlights[`${i}${j}`]}
           key={`Tile${i}${j}`}
         />
       );
@@ -65,7 +86,7 @@ class Game extends Component {
 
   renderTiles() {
     const tiles = [];
-    for (let i = 0; i < this.state.level; i += 1) {
+    for (let i = 0; i < this.state.tilesNbr; i += 1) {
       tiles.push(
         <View
           style={{flex: 1, alignSelf: 'stretch'}}
@@ -82,7 +103,7 @@ class Game extends Component {
   render() {
     return (
       <View style={styles.wrapper}>
-        {this.renderTiles()}
+        {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
       </View>
     );
   }
