@@ -7,11 +7,25 @@ import {
 class Tile extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      style: {}
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.highlight && nextProps.highlight) {
+      this.setState({style: {backgroundColor: 'purple'}}, () => {
+        setTimeout(() => {
+          this.setState({style: {}})
+        }, 400);
+      })
+    }
   }
 
   render() {
     return (
-      <View style={styles.wrapper} />
+      <View style={[styles.wrapper, this.state.style]} />
     );
   }
 }

@@ -8,17 +8,45 @@ import {
 import Tile from './Tile';
 import GlobalStyle from '../../globalStyles';
 
+const HIGHLIGHT_DURATION = 500;
+
 class Game extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      level: 1
+      level: 1,
+      highlights: [false]
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.level !== nextState.level;
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.level !== nextState.level) {
+      const highlights = [];
+      for (let i = 0; i < nextState.level; i += 1) {
+        highlights.push(false);
+      }
+
+      this.setState({highlights});
+    }
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.highlights.length !== this.state.highlights.length) {
+      this.highlightTiles();
+    }
+  }
+
+  componentDidMount() {
+    this.highlightTiles();
+  }
+
+  highlightTiles() {
+    setTimeout(() => {
+      const highlights = this.state.highlights;
+      highlights[0] = true;
+      this.setState({highlights});
+    }, HIGHLIGHT_DURATION);
   }
 
   renderEachTile(j) {
@@ -26,6 +54,7 @@ class Game extends Component {
     for (let i = 0; i < this.state.level; i += 1) {
       tiles.push(
         <Tile
+          highlight={this.state.highlights[i]}
           key={`Tile${i}${j}`}
         />
       );
