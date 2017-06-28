@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
   View,
-  StyleSheet
+  StyleSheet,
+  TouchableHighlight
 } from 'react-native';
 
 class Tile extends Component {
@@ -11,6 +12,9 @@ class Tile extends Component {
     this.state = {
       style: {}
     };
+
+    this.tilePressed = this.tilePressed.bind(this);
+    this.pressed = false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -23,9 +27,30 @@ class Tile extends Component {
     }
   }
 
+  tilePressed() {
+    if (!this.props.launched || this.pressed) {
+      return null;
+    }
+
+    this.pressed = true;
+    if (this.props.highlight) {
+      this.setState({style: {backgroundColor: 'green'}});
+    } else {
+      this.setState({style: {backgroundColor: 'red'}});
+    }
+
+    this.props.tilePressed(this.props.id);
+  }
+
   render() {
     return (
-      <View style={[styles.wrapper, this.state.style]} />
+      <TouchableHighlight
+        onPress={this.tilePressed}
+        style={{flex: 1}}
+        underlayColor={'transparent'}
+      >
+        <View style={[styles.wrapper, this.state.style]} />
+      </TouchableHighlight>
     );
   }
 }

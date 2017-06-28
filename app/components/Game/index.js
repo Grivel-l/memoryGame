@@ -5,7 +5,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-import Tile from './Tile';
+import Tile from '../../containers/Game/tile';
 import GlobalStyle from '../../globalStyles';
 
 const HIGHLIGHT_DURATION = 1600;
@@ -17,12 +17,12 @@ class Game extends Component {
       level: 1,
       tilesNbr: 2,
       highlights: {},
-      tiles: []
+      tiles: [],
+      launched: false
     };
 
     this.tilesHighlighted = 0;
 
-    // this.highlightTiles = this.highlightTiles.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
   }
 
@@ -62,9 +62,11 @@ class Game extends Component {
       const highlights = this.state.highlights;
       highlights[Object.keys(highlights)[this.tilesHighlighted]] = true;
       this.setState({highlights}, () => {
+        this.tilesHighlighted += 1;
         if (this.tilesHighlighted < Object.keys(this.state.highlights).length) {
-          this.tilesHighlighted += 1;
           this.highlightTiles();
+        } else {
+          this.setState({launched: true});
         }
       });
     }, HIGHLIGHT_DURATION);
@@ -76,6 +78,8 @@ class Game extends Component {
       tiles.push(
         <Tile
           highlight={this.state.highlights[`${i}${j}`]}
+          launched={this.state.launched}
+          id={`${i}${j}`}
           key={`Tile${i}${j}`}
         />
       );
@@ -101,6 +105,7 @@ class Game extends Component {
   }
 
   render() {
+    console.log('This.props', this.props);
     return (
       <View style={styles.wrapper}>
         {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}

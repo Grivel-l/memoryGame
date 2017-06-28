@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 
 import configureStore from './configureStore';
-import App from './containers/app';
+import App from './components/App';
 
 const Index = () => {
   const store = configureStore();
