@@ -1,5 +1,6 @@
 import {
-  GAME_TILE_PRESSED
+  GAME_TILE_PRESSED,
+  GAME_TILE_RESET_PRESSED
 } from '../../actions/Game/tile';
 
 const initialState = {
@@ -16,6 +17,11 @@ const app = (state = initialState, {type, payload}) => {
           ...state.tilesPressed,
           ...Object.values(payload)
         ]
+      };
+    case GAME_TILE_RESET_PRESSED:
+      return {
+        ...state,
+        tilesPressed: initialState.tilesPressed
       };
     default:
       return state;

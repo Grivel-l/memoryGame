@@ -22,7 +22,7 @@ class Tile extends Component {
       this.setState({style: {backgroundColor: 'purple'}}, () => {
         setTimeout(() => {
           this.setState({style: {}})
-        }, 800);
+        }, 400);
       })
     }
   }

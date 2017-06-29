@@ -9,7 +9,7 @@ import _ from 'lodash';
 import Tile from '../../containers/Game/tile';
 import GlobalStyle from '../../globalStyles';
 
-const HIGHLIGHT_DURATION = 1600;
+const HIGHLIGHT_DURATION = 800;
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -47,13 +47,19 @@ class Game extends Component {
           }
         });
 
+        console.log('Nextprops', nextProps.pressedTiles);
+
         if (allFind) {
-          this.tilesHighlighted = 0;
-          this.setState({
-            level: this.state.level + 1,
-            tilesNbr: (this.state.level + 1) % 2 === 0 ? this.state.tilesNbr + 1 : this.state.tilesNbr,
-            launched: false,
-            highlights: {}
+          this.setState({launched: false}, () => {
+            this.props.resetPressed();
+            setTimeout(() => {
+              this.tilesHighlighted = 0;
+              this.setState({
+                level: this.state.level + 1,
+                tilesNbr: (this.state.level + 1) % 2 === 0 ? this.state.tilesNbr + 1 : this.state.tilesNbr,
+                highlights: {}
+              });
+            }, 800);
           });
         }
       }
