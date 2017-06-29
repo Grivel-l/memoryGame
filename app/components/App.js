@@ -5,7 +5,7 @@ import {
   Button
 } from 'react-native';
 
-import GlobalStyles from '../globalStyles';
+import GlobalStyles from '../utils/styles/globalStyles';
 import Game from '../containers/Game/game';
 
 class App extends Component {
@@ -21,7 +21,7 @@ class App extends Component {
 
   render() {
     return (
-      <View style={[GlobalStyles.wrapper, {backgroundColor: 'orange'}]}>
+      <View style={GlobalStyles.wrapper}>
         {!this.state.begin
         ? <Button
           onPress={() => {

@@ -7,7 +7,7 @@ import {
 import _ from 'lodash';
 
 import Tile from '../../containers/Game/tile';
-import GlobalStyle from '../../globalStyles';
+import GlobalStyle from '../../utils/styles/globalStyles';
 
 const HIGHLIGHT_DURATION = 800;
 const NEXT_LEVEL_DURATION = 800;
