@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   View,
   StyleSheet,
-  TouchableHighlight
+  TouchableHighlight,
+  Animated
 } from 'react-native';
 
 import Colors from '../../utils/styles/Colors';
@@ -17,8 +18,32 @@ class Tile extends Component {
     };
 
     this.pressed = false;
+    this.animation = new Animated.Value(0);
+    this.animationStyle = null;
 
     this.tilePressed = this.tilePressed.bind(this);
+  }
+
+  componentWillMount() {
+    if (this.props.highlight === false) {
+      this.animationStyle = {
+        transform: [{
+          rotateY: this.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '180deg']
+          })
+        }]
+      };
+    } else {
+      this.animationStyle = {
+        transform: [{
+          rotate: this.animation.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: ['0deg', '25deg', '0deg']
+          })
+        }]
+      };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,6 +68,13 @@ class Tile extends Component {
       this.setState({style: {backgroundColor: Colors['wrongResponse']}});
     }
 
+    Animated.spring(
+      this.animation, {
+        toValue: 1,
+        useNativeDriver: true
+      }
+    ).start();
+
     this.props.tilePressed(this.props.id);
   }
 
@@ -53,7 +85,13 @@ class Tile extends Component {
         style={{flex: 1}}
         underlayColor={'transparent'}
       >
-        <View style={[styles.wrapper, this.state.style]} />
+        <Animated.View
+          style={[
+            styles.wrapper,
+            this.state.style,
+            this.animationStyle
+          ]}
+        />
       </TouchableHighlight>
     );
   }
