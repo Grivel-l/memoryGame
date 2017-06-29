@@ -10,7 +10,6 @@ const initialState = {
 const app = (state = initialState, {type, payload}) => {
   switch(type) {
     case GAME_TILE_PRESSED:
-      console.log('Payload', payload);
       return {
         ...state,
         tilesPressed: [

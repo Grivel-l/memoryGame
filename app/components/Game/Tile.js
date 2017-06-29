@@ -5,6 +5,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+const HIGHLIGHT_DURATION = 400;
 class Tile extends Component {
   constructor(props) {
     super(props);
@@ -13,8 +14,9 @@ class Tile extends Component {
       style: {}
     };
 
-    this.tilePressed = this.tilePressed.bind(this);
     this.pressed = false;
+
+    this.tilePressed = this.tilePressed.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,7 +24,7 @@ class Tile extends Component {
       this.setState({style: {backgroundColor: 'purple'}}, () => {
         setTimeout(() => {
           this.setState({style: {}})
-        }, 400);
+        }, HIGHLIGHT_DURATION);
       })
     }
   }
