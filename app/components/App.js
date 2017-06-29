@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import GlobalStyles from '../globalStyles';
-import Game from './Game/index';
+import Game from '../containers/Game/game';
 
 class App extends Component {
   constructor(props) {
