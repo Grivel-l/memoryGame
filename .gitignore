@@ -1,3 +1,4 @@
 node_modules
 android/app/*.keystore
 android/gradle.properties
+android/app/build/
