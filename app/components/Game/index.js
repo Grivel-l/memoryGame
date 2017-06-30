@@ -24,6 +24,7 @@ class Game extends Component {
     };
 
     this.tilesHighlighted = 0;
+    this.shuffledKeys = null;
 
     this.renderTiles = this.renderTiles.bind(this);
   }
@@ -52,17 +53,22 @@ class Game extends Component {
           this.setState({launched: false}, () => {
             this.props.resetPressed();
             setTimeout(() => {
-              this.tilesHighlighted = 0;
-              this.setState({
-                level: this.state.level + 1,
-                tilesNbr: (this.state.level + 1) % 2 === 0 ? this.state.tilesNbr + 1 : this.state.tilesNbr,
-                highlights: {}
-              });
+              this.nextLevel();
             }, NEXT_LEVEL_DURATION);
           });
         }
       }
     }
+  }
+
+  nextLevel() {
+    this.tilesHighlighted = 0;
+    this.shuffledKeys = null;
+    this.setState({
+      level: this.state.level + 1,
+      tilesNbr: (this.state.level + 1) % 2 === 0 ? this.state.tilesNbr + 1 : this.state.tilesNbr,
+      highlights: {}
+    });
   }
 
   launchTurn() {
@@ -76,6 +82,7 @@ class Game extends Component {
     getHighlights();
 
     this.setState({highlights}, () => {
+      this.shuffledKeys = _.shuffle(Object.keys(highlights));
       this.highlightTiles();
     });
   }
@@ -89,7 +96,7 @@ class Game extends Component {
   highlightTiles() {
     setTimeout(() => {
       const highlights = this.state.highlights;
-      highlights[Object.keys(highlights)[this.tilesHighlighted]] = true;
+      highlights[this.shuffledKeys[this.tilesHighlighted]] = true;
       this.setState({highlights}, () => {
         this.tilesHighlighted += 1;
         if (this.tilesHighlighted < Object.keys(this.state.highlights).length) {
