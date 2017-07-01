@@ -2,16 +2,19 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Animated,
+  Dimensions
 } from 'react-native';
 import _ from 'lodash';
 
 import Tile from '../../containers/Game/tile';
 import GlobalStyle from '../../utils/styles/globalStyles';
 
+const {height} = Dimensions.get('window');
 const HIGHLIGHT_DURATION = 800;
 const NEXT_LEVEL_DURATION = 800;
-const TRANSITION_DURATION = 1000;
+const TRANSITION_DURATION = 800;
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +28,7 @@ class Game extends Component {
       text: null
     };
 
+    this.animatedText = new Animated.Value(0);
     this.tilesHighlighted = 0;
     this.shuffledKeys = null;
 
@@ -64,6 +68,7 @@ class Game extends Component {
   }
 
   nextLevel() {
+    this.animatedText = new Animated.Value(0);
     this.tilesHighlighted = 0;
     this.shuffledKeys = null;
     this.setState({
@@ -82,17 +87,26 @@ class Game extends Component {
       }
     };
 
-    this.setState({text: `Level ${this.state.level}`}, () => {
-      setTimeout(() => {
-        this.setState({text: null}, () => {
-          getHighlights();
-
-          this.setState({highlights}, () => {
-            this.shuffledKeys = _.shuffle(Object.keys(highlights));
-            this.highlightTiles();
+    getHighlights();
+    this.setState({text: `Level ${this.state.level}`, highlights}, () => {
+      this.shuffledKeys = _.shuffle(Object.keys(highlights));
+      Animated.spring(
+        this.animatedText, {
+          toValue: 1
+        }
+      ).start(() => {
+        setTimeout(() => {
+          Animated.spring(
+            this.animatedText, {
+              toValue: 2
+            }
+          ).start(() => {
+            this.setState({text: null}, () => {
+              this.highlightTiles();
+            });
           });
-        });
-      }, TRANSITION_DURATION);
+        }, TRANSITION_DURATION);
+      });
     });
   }
 
@@ -103,18 +117,18 @@ class Game extends Component {
   }
 
   highlightTiles() {
-    setTimeout(() => {
-      const highlights = this.state.highlights;
-      highlights[this.shuffledKeys[this.tilesHighlighted]] = true;
-      this.setState({highlights}, () => {
-        this.tilesHighlighted += 1;
-        if (this.tilesHighlighted < Object.keys(this.state.highlights).length) {
+    const highlights = this.state.highlights;
+    highlights[this.shuffledKeys[this.tilesHighlighted]] = true;
+    this.setState({highlights}, () => {
+      this.tilesHighlighted += 1;
+      if (this.tilesHighlighted < Object.keys(this.state.highlights).length) {
+        setTimeout(() => {
           this.highlightTiles();
-        } else {
-          this.setState({launched: true});
-        }
-      });
-    }, HIGHLIGHT_DURATION);
+        }, HIGHLIGHT_DURATION);
+      } else {
+        this.setState({launched: true});
+      }
+    });
   }
 
   renderEachTile(j) {
@@ -151,9 +165,19 @@ class Game extends Component {
 
   renderText() {
     return (
-      <View style={styles.transitionTextWrapper}>
+      <Animated.View
+        style={[
+          styles.transitionTextWrapper,
+          {transform: [{
+            translateY: this.animatedText.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [-50, height / 3, height]
+            })
+          }]}
+        ]}
+      >
         <Text style={styles.transitionText}>{this.state.text}</Text>
-      </View>
+      </Animated.View>
     );
   }
 
@@ -161,7 +185,7 @@ class Game extends Component {
     return (
       <View style={styles.wrapper}>
         {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
-        {this.state.text !== null && this.renderText()}
+        {this.renderText()}
       </View>
     );
   }
@@ -175,14 +199,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   transitionTextWrapper: {
-    width: '100%',
-    height: '100%',
     position: 'absolute',
     top: 0,
-    left: 0,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    margin: 10,
+    width: '100%',
+    alignItems: 'center'
   },
   transitionText: {
     fontSize: 50,
