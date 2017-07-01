@@ -10,6 +10,7 @@ import _ from 'lodash';
 
 import Tile from '../../containers/Game/tile';
 import GlobalStyle from '../../utils/styles/globalStyles';
+import Errors from './Errors';
 
 const {height} = Dimensions.get('window');
 const HIGHLIGHT_DURATION = 800;
@@ -25,11 +26,13 @@ class Game extends Component {
       highlights: {},
       tiles: [],
       launched: false,
-      text: null
+      text: null,
+      errors: []
     };
 
     this.animatedText = new Animated.Value(0);
     this.tilesHighlighted = 0;
+    this.errorsNbr = 0;
     this.shuffledKeys = null;
 
     this.renderTiles = this.renderTiles.bind(this);
@@ -47,6 +50,7 @@ class Game extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.pressedTiles.length !== nextProps.pressedTiles.length) {
+      this.handleErrors(_.difference(nextProps.pressedTiles, Object.keys(this.state.highlights)));
       if (nextProps.pressedTiles.length >= Object.keys(this.state.highlights).length) {
         let allFind = true;
         Object.keys(this.state.highlights).map(event => {
@@ -67,6 +71,28 @@ class Game extends Component {
     }
   }
 
+  checkGameOver() {
+    if (this.errorsNbr === 5) {
+      console.log('Game over');
+    } else {
+      console.log('Pop an error');
+    }
+  }
+
+  handleErrors(tiles) {
+    const errors = [...this.state.errors];
+    tiles.map(tile => {
+      if (errors.indexOf(parseInt(tile)) === -1) {
+        errors.push(parseInt(tile));
+        this.errorsNbr += 1;
+        this.checkGameOver();
+      }
+      return null;
+    });
+
+    this.setState({errors});
+  }
+
   nextLevel() {
     this.animatedText = new Animated.Value(0);
     this.tilesHighlighted = 0;
@@ -74,7 +100,8 @@ class Game extends Component {
     this.setState({
       level: this.state.level + 1,
       tilesNbr: (this.state.level + 1) % 2 === 0 ? this.state.tilesNbr + 1 : this.state.tilesNbr,
-      highlights: {}
+      highlights: {},
+      errors: []
     });
   }
 
@@ -188,6 +215,9 @@ class Game extends Component {
       <View style={styles.wrapper}>
         {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
         {this.renderText()}
+        <Errors
+          errorsNbr={this.errorsNbr}
+        />
       </View>
     );
   }
