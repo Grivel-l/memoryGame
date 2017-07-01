@@ -92,13 +92,15 @@ class Game extends Component {
       this.shuffledKeys = _.shuffle(Object.keys(highlights));
       Animated.spring(
         this.animatedText, {
-          toValue: 1
+          toValue: 1,
+          useNativeDriver: true
         }
       ).start(() => {
         setTimeout(() => {
           Animated.spring(
             this.animatedText, {
-              toValue: 2
+              toValue: 2,
+              useNativeDriver: true
             }
           ).start(() => {
             this.setState({text: null}, () => {
