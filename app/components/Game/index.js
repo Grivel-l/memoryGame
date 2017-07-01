@@ -11,6 +11,7 @@ import GlobalStyle from '../../utils/styles/globalStyles';
 
 const HIGHLIGHT_DURATION = 800;
 const NEXT_LEVEL_DURATION = 800;
+const TRANSITION_DURATION = 1000;
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,8 @@ class Game extends Component {
       tilesNbr: 2,
       highlights: {},
       tiles: [],
-      launched: false
+      launched: false,
+      text: null
     };
 
     this.tilesHighlighted = 0;
@@ -79,11 +81,18 @@ class Game extends Component {
         getHighlights();
       }
     };
-    getHighlights();
 
-    this.setState({highlights}, () => {
-      this.shuffledKeys = _.shuffle(Object.keys(highlights));
-      this.highlightTiles();
+    this.setState({text: `Level ${this.state.level}`}, () => {
+      setTimeout(() => {
+        this.setState({text: null}, () => {
+          getHighlights();
+
+          this.setState({highlights}, () => {
+            this.shuffledKeys = _.shuffle(Object.keys(highlights));
+            this.highlightTiles();
+          });
+        });
+      }, TRANSITION_DURATION);
     });
   }
 
@@ -140,10 +149,19 @@ class Game extends Component {
     return tiles;
   }
 
+  renderText() {
+    return (
+      <View style={styles.transitionTextWrapper}>
+        <Text style={styles.transitionText}>{this.state.text}</Text>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View style={styles.wrapper}>
         {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
+        {this.state.text !== null && this.renderText()}
       </View>
     );
   }
@@ -155,6 +173,20 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     padding: 10,
     flexDirection: 'row'
+  },
+  transitionTextWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  transitionText: {
+    fontSize: 50,
+    fontWeight: 'bold'
   }
 });
 
