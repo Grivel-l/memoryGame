@@ -12,9 +12,15 @@ class Rapidity extends Component {
     super(props);
   }
 
+  renderTiles() {
+    return <View />
+  }
+
   render() {
     return (
-      <View style={GlobalStyles.gameWrapper} />
+      <View style={GlobalStyles.gameWrapper}>
+        {this.renderTiles()}
+      </View>
     );
   }
 }

@@ -11,6 +11,7 @@ import _ from 'lodash';
 import Tile from '../../../containers/Game/tile';
 import GlobalStyle from '../../../utils/styles/globalStyles';
 import Errors from '../Errors';
+import RenderTiles from '../RenderTiles';
 
 const {height} = Dimensions.get('window');
 const HIGHLIGHT_DURATION = 800;
@@ -160,38 +161,6 @@ class Memory extends Component {
     });
   }
 
-  renderEachTile(j) {
-    const tiles = [];
-    for (let i = 0; i < this.state.tilesNbr; i += 1) {
-      tiles.push(
-        <Tile
-          highlight={this.state.highlights[`${i}${j}`]}
-          launched={this.state.launched}
-          id={`${i}${j}`}
-          key={`Tile${i}${j}`}
-        />
-      );
-    }
-
-    return tiles;
-  }
-
-  renderTiles() {
-    const tiles = [];
-    for (let i = 0; i < this.state.tilesNbr; i += 1) {
-      tiles.push(
-        <View
-          style={{flex: 1, alignSelf: 'stretch'}}
-          key={`Line${i}`}
-        >
-          {this.renderEachTile(i)}
-        </View>
-      )
-    }
-
-    return tiles;
-  }
-
   renderText() {
     return (
       <Animated.View
@@ -210,10 +179,24 @@ class Memory extends Component {
     );
   }
 
+  renderTiles() {
+    if (Object.keys(this.state.highlights).length > 0) {
+      return (
+        <RenderTiles
+          tilesNbr={this.state.tilesNbr}
+          highlights={this.state.highlights}
+          launched={this.state.launched}
+        />
+      )
+    } else {
+      return <View />;
+    }
+  }
+
   render() {
     return (
       <View style={GlobalStyle.gameWrapper}>
-        {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
+        {this.renderTiles()}
         {this.renderText()}
         <Errors
           errorsNbr={this.errorsNbr}
