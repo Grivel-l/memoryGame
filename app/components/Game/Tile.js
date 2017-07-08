@@ -32,6 +32,8 @@ class Tile extends Component {
             inputRange: [0, 1],
             outputRange: ['0deg', '180deg']
           })
+        }, {
+          perspective: 100
         }]
       };
     } else {
