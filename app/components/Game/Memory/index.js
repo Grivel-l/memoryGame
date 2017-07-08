@@ -212,7 +212,7 @@ class Memory extends Component {
 
   render() {
     return (
-      <View style={styles.wrapper}>
+      <View style={GlobalStyle.gameWrapper}>
         {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
         {this.renderText()}
         <Errors
@@ -224,12 +224,6 @@ class Memory extends Component {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    alignSelf: 'stretch',
-    padding: 10,
-    flexDirection: 'row'
-  },
   transitionTextWrapper: {
     position: 'absolute',
     top: 0,
