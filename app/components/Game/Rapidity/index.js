@@ -16,12 +16,27 @@ class Rapidity extends Component {
     this.state = {
       highlights: {}
     };
+
+    this.timeoutDuration = 1000;
+
+    this.launchGame = this.launchGame.bind(this);
   }
 
   componentWillMount() {
-    this.setState({
-      highlights: getHighlights(2, this.props.gridSize)
-    });
+    this.launchGame();
+  }
+
+  launchGame() {
+    setTimeout(() => {
+      this.setState({
+        highlights: getHighlights(1, this.props.gridSize, true)
+      }, () => {
+        if (this.timeoutDuration > 200) {
+          this.timeoutDuration -= 20;
+        }
+        this.launchGame();
+      })
+    }, this.timeoutDuration);
   }
 
   render() {
