@@ -8,15 +8,15 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-import Tile from '../../containers/Game/tile';
-import GlobalStyle from '../../utils/styles/globalStyles';
-import Errors from './Errors';
+import Tile from '../../../containers/Game/tile';
+import GlobalStyle from '../../../utils/styles/globalStyles';
+import Errors from '../Errors';
 
 const {height} = Dimensions.get('window');
 const HIGHLIGHT_DURATION = 800;
 const NEXT_LEVEL_DURATION = 800;
 const TRANSITION_DURATION = 800;
-class Game extends Component {
+class Memory extends Component {
   constructor(props) {
     super(props);
 
@@ -244,4 +244,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Game;
+export default Memory;

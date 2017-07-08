@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 import GlobalStyles from '../utils/styles/globalStyles';
-import Game from '../containers/Game/game';
+import Memory from '../containers/Game/Memory/index';
 import Colors from '../utils/styles/Colors';
 
 class App extends Component {
@@ -21,21 +21,33 @@ class App extends Component {
     this.beginGame = this.beginGame.bind(this);
   }
 
-  beginGame() {
-    this.setState({begin: true});
+  beginGame(gameMode) {
+    this.setState({begin: gameMode});
+  }
+
+  renderGame() {
+    return this.state.begin === 'MEMORY' ? <Memory /> : <Memory />;
   }
 
   renderContent() {
-    if (this.state.begin) {
-      return <Game />;
+    if (this.state.begin !== false) {
+      return this.renderGame();
     } else {
       return (
-        <TouchableHighlight
-          onPress={this.beginGame}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>{'Start game'}</Text>
-        </TouchableHighlight>
+        <View>
+          <TouchableHighlight
+            onPress={() => this.beginGame('MEMORY')}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>{'Memory game'}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={() => this.beginGame('RAPIDITY')}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>{'Rapidity game'}</Text>
+          </TouchableHighlight>
+        </View>
       );
     }
   }
@@ -55,7 +67,8 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 5
+    borderRadius: 5,
+    margin: 10
   },
   buttonText: {
     fontSize: 40,
