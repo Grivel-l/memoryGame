@@ -12,6 +12,7 @@ import Tile from '../../../containers/Game/tile';
 import GlobalStyle from '../../../utils/styles/globalStyles';
 import Errors from '../Errors';
 import RenderTiles from '../RenderTiles';
+import getHighlights from '../../../utils/getHighlights';
 
 const {height} = Dimensions.get('window');
 const HIGHLIGHT_DURATION = 800;
@@ -107,15 +108,7 @@ class Memory extends Component {
   }
 
   launchTurn() {
-    const highlights = {};
-    const getHighlights = () => {
-      highlights[`${this.getRandomNbr(0, this.state.tilesNbr - 1)}${this.getRandomNbr(0, this.state.tilesNbr - 1)}`] = false;
-      if (Object.keys(highlights).length < this.state.level) {
-        getHighlights();
-      }
-    };
-
-    getHighlights();
+    const highlights = getHighlights(this.state.level, this.state.tilesNbr);
     this.setState({text: `Level ${this.state.level}`, highlights}, () => {
       this.shuffledKeys = _.shuffle(Object.keys(highlights));
       Animated.spring(
@@ -138,12 +131,6 @@ class Memory extends Component {
         }, TRANSITION_DURATION);
       });
     });
-  }
-
-  getRandomNbr(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   highlightTiles() {

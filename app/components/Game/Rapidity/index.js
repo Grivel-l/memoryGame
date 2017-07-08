@@ -6,20 +6,31 @@ import {
 
 import Tile from '../Tile';
 import GlobalStyles from '../../../utils/styles/globalStyles';
+import RenderTiles from '../RenderTiles';
+import getHighlights from '../../../utils/getHighlights';
 
 class Rapidity extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      highlights: {}
+    };
   }
 
-  renderTiles() {
-    return <View />
+  componentWillMount() {
+    this.setState({
+      highlights: getHighlights(2, this.props.gridSize)
+    });
   }
 
   render() {
     return (
       <View style={GlobalStyles.gameWrapper}>
-        {this.renderTiles()}
+        <RenderTiles
+          tilesNbr={this.props.gridSize}
+          highlights={this.state.highlights}
+        />
       </View>
     );
   }
