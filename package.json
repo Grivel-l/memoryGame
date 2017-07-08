@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "react": "16.0.0-alpha.6",
-    "react-native": "0.43",
+    "react-native": "0.44",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-devtools": "^3.3.2",
