@@ -39,6 +39,24 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.45.0/jars/libs/infer-annotations-4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="9809e90be788acdb479b2b44e2112f3295a03068">
+        <dex dex="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/pre-dexed/debug/infer-annotations-4.0_f09f14b30d083c5e311653e672848a74e1949f89.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.45.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="0d3e48e200296061415952a358fad487e129adaa">
+        <dex dex="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/pre-dexed/debug/com.facebook.react-react-native-0.45.0_43c54a1fedc3ff09f47b60771dd130e4eb0d06dd.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/lgm6/.gradle/caches/modules-2/files-2.1/com.facebook.fbui.textlayoutbuilder/staticlayout-proxy/1.0/f162442a19fff13995fbd51ba414d9ee05579080/staticlayout-proxy-1.0.jar"
         jumboMode="false"
         optimize="true"
@@ -147,15 +165,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.44.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="af9665a44df26b4098e24c934c1109507845ef5e">
-        <dex dex="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/pre-dexed/debug/com.facebook.react-react-native-0.44.0_33ca22d9ebd842edbeda4bba96460d7e120e1a39.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -189,15 +198,6 @@
         revision="23.0.1"
         sha1="cf836a435a496eb22ff2aa69aa1e619462549f81">
         <dex dex="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/pre-dexed/debug/com.facebook.fresco-fresco-1.0.1_1c6c456d6962f4deec3c80c2df023226b797fb51.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.44.0/jars/libs/infer-annotations-1.5.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="dcac634e137395f79693ec760f081a86eb2bd84e">
-        <dex dex="/home/lgm6/Programmation/memoryGame/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5_ceb4ae61564adb3b91ac2006c2e3d41c392d5187.jar" />
     </item>
 
 </items>
