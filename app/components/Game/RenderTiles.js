@@ -15,6 +15,7 @@ class RenderTiles extends Component {
         <Tile
           highlight={this.props.highlights[`${i}${j}`]}
           launched={this.props.launched}
+          animationType={this.props.animationType}
           id={`${i}${j}`}
           key={`Tile${i}${j}`}
         />

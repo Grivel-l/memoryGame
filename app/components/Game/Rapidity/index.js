@@ -45,6 +45,7 @@ class Rapidity extends Component {
         <RenderTiles
           tilesNbr={this.props.gridSize}
           highlights={this.state.highlights}
+          animationType={'GROW'}
         />
       </View>
     );

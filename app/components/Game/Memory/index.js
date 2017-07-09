@@ -173,6 +173,7 @@ class Memory extends Component {
           tilesNbr={this.state.tilesNbr}
           highlights={this.state.highlights}
           launched={this.state.launched}
+          animationType={'TURN'}
         />
       )
     } else {
