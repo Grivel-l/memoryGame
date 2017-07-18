@@ -17,7 +17,7 @@ class Rapidity extends Component {
       highlights: {}
     };
 
-    this.timeoutDuration = 2000;
+    this.timeoutDuration = 800;
     this.isBusy = {};
 
     this.launchGame = this.launchGame.bind(this);
@@ -38,7 +38,7 @@ class Rapidity extends Component {
       let highlights;
       const getHL = () => {
         highlights = getHighlights(1, this.props.gridSize, true);
-        if (this.isBusy[highlights]) {
+        if (this.isBusy[Object.keys(highlights)[0]]) {
           getHL();
         }
       };
@@ -47,7 +47,7 @@ class Rapidity extends Component {
       this.setState({
         highlights
       }, () => {
-        this.isBusy[this.state.highlights[Object.keys(this.state.highlights)[0]]] = true;
+        this.isBusy[Object.keys(this.state.highlights)[0]] = true;
         if (this.timeoutDuration > 200) {
           this.timeoutDuration -= 20;
         }

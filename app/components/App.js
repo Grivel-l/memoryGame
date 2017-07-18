@@ -52,15 +52,15 @@ class App extends Component {
               <Text style={styles.buttonText}>{'Memory game'}</Text>
             </TouchableHighlight>
           </View>
-          <View style={styles.buttonWrapper}>
+          <View style={[styles.buttonWrapper, styles.disabled]}>
             <TouchableHighlight
-              onPress={() => this.beginGame('RAPIDITY')}
+              // onPress={() => this.beginGame('RAPIDITY')}
               style={styles.button}
             >
               <Text style={styles.buttonText}>{'Rapidity game'}</Text>
             </TouchableHighlight>
             <TouchableHighlight
-              onPress={this.changeGridSize}
+              // onPress={this.changeGridSize}
               style={styles.subTextWrapper}
               underlayColor={Colors['tilesColor']}
             >
@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 16
+  },
+  disabled: {
+    opacity: 0.3
   }
 });
 
