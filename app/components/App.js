@@ -29,7 +29,15 @@ class App extends Component {
   }
 
   renderGame() {
-    return this.state.begin === 'MEMORY' ? <Memory /> : <Rapidity gridSize={this.state.gridSize} />;
+    if (this.state.begin === 'MEMORY') {
+      return <Memory />;
+    } else if (this.state.begin === 'RAPIDITY') {
+      return <Rapidity gridSize={this.state.gridSize} />;
+    } else if (this.state.begin === 'SIMON') {
+      return <Memory />;
+    }
+
+    return <View />
   }
 
   changeGridSize() {
@@ -61,6 +69,21 @@ class App extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               // onPress={this.changeGridSize}
+              style={styles.subTextWrapper}
+              underlayColor={Colors['tilesColor']}
+            >
+              <Text style={styles.subText}>{`Grid size: ${this.state.gridSize}x${this.state.gridSize}`}</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <TouchableHighlight
+              onPress={() => this.beginGame('SIMON')}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>{'Simon game'}</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.changeGridSize}
               style={styles.subTextWrapper}
               underlayColor={Colors['tilesColor']}
             >
