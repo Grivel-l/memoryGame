@@ -6,5 +6,10 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors['backgroundColor']
+  },
+  gameWrapper: {
+    flex: 1,
+    padding: 10,
+    flexDirection: 'row'
   }
 };

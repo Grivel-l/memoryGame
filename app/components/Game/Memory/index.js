@@ -8,15 +8,17 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-import Tile from '../../containers/Game/tile';
-import GlobalStyle from '../../utils/styles/globalStyles';
-import Errors from './Errors';
+import Tile from '../../../containers/Game/tile';
+import GlobalStyle from '../../../utils/styles/globalStyles';
+import Errors from '../Errors';
+import RenderTiles from '../RenderTiles';
+import getHighlights from '../../../utils/getHighlights';
 
 const {height} = Dimensions.get('window');
 const HIGHLIGHT_DURATION = 800;
 const NEXT_LEVEL_DURATION = 800;
 const TRANSITION_DURATION = 800;
-class Game extends Component {
+class Memory extends Component {
   constructor(props) {
     super(props);
 
@@ -106,15 +108,7 @@ class Game extends Component {
   }
 
   launchTurn() {
-    const highlights = {};
-    const getHighlights = () => {
-      highlights[`${this.getRandomNbr(0, this.state.tilesNbr - 1)}${this.getRandomNbr(0, this.state.tilesNbr - 1)}`] = false;
-      if (Object.keys(highlights).length < this.state.level) {
-        getHighlights();
-      }
-    };
-
-    getHighlights();
+    const highlights = getHighlights(this.state.level, this.state.tilesNbr);
     this.setState({text: `Level ${this.state.level}`, highlights}, () => {
       this.shuffledKeys = _.shuffle(Object.keys(highlights));
       Animated.spring(
@@ -139,12 +133,6 @@ class Game extends Component {
     });
   }
 
-  getRandomNbr(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   highlightTiles() {
     const highlights = this.state.highlights;
     highlights[this.shuffledKeys[this.tilesHighlighted]] = true;
@@ -158,38 +146,6 @@ class Game extends Component {
         this.setState({launched: true});
       }
     });
-  }
-
-  renderEachTile(j) {
-    const tiles = [];
-    for (let i = 0; i < this.state.tilesNbr; i += 1) {
-      tiles.push(
-        <Tile
-          highlight={this.state.highlights[`${i}${j}`]}
-          launched={this.state.launched}
-          id={`${i}${j}`}
-          key={`Tile${i}${j}`}
-        />
-      );
-    }
-
-    return tiles;
-  }
-
-  renderTiles() {
-    const tiles = [];
-    for (let i = 0; i < this.state.tilesNbr; i += 1) {
-      tiles.push(
-        <View
-          style={{flex: 1, alignSelf: 'stretch'}}
-          key={`Line${i}`}
-        >
-          {this.renderEachTile(i)}
-        </View>
-      )
-    }
-
-    return tiles;
   }
 
   renderText() {
@@ -210,10 +166,25 @@ class Game extends Component {
     );
   }
 
+  renderTiles() {
+    if (Object.keys(this.state.highlights).length > 0) {
+      return (
+        <RenderTiles
+          tilesNbr={this.state.tilesNbr}
+          highlights={this.state.highlights}
+          launched={this.state.launched}
+          animationType={'TURN'}
+        />
+      )
+    } else {
+      return <View />;
+    }
+  }
+
   render() {
     return (
-      <View style={styles.wrapper}>
-        {Object.keys(this.state.highlights).length > 0 && this.renderTiles()}
+      <View style={GlobalStyle.gameWrapper}>
+        {this.renderTiles()}
         {this.renderText()}
         <Errors
           errorsNbr={this.errorsNbr}
@@ -224,12 +195,6 @@ class Game extends Component {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    alignSelf: 'stretch',
-    padding: 10,
-    flexDirection: 'row'
-  },
   transitionTextWrapper: {
     position: 'absolute',
     top: 0,
@@ -244,4 +209,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Game;
+export default Memory;
