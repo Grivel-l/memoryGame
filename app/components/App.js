@@ -9,6 +9,7 @@ import {
 import GlobalStyles from '../utils/styles/globalStyles';
 import Memory from '../containers/Game/Memory/index';
 import Rapidity from '../containers/Game/Rapidity/index';
+import Simon from '../containers/Game/Simon/index';
 import Colors from '../utils/styles/Colors';
 
 class App extends Component {
@@ -34,7 +35,7 @@ class App extends Component {
     } else if (this.state.begin === 'RAPIDITY') {
       return <Rapidity gridSize={this.state.gridSize} />;
     } else if (this.state.begin === 'SIMON') {
-      return <Memory />;
+      return <Simon gridSize={this.state.gridSize} />;
     }
 
     return <View />
