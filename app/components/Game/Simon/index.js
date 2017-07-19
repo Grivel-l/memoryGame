@@ -6,13 +6,12 @@ import {
   Animated,
   Dimensions
 } from 'react-native';
-// import _ from 'lodash';
 
 import GlobalStyle from '../../../utils/styles/globalStyles';
 import getHighlights from '../../../utils/getHighlights';
 import RenderTiles from '../RenderTiles';
 import Margins from '../../../utils/styles/Margins';
-import Colors from '../../../utils/styles/Colors';
+import GameOver from '../../../containers/Game/gameOver';
 
 const {height} = Dimensions.get('window');
 class Simon extends Component {
@@ -99,7 +98,7 @@ class Simon extends Component {
             setTimeout(() => {
               i += 1;
               turnOnTile();
-            }, 300);
+            }, 800);
           } else {
             this.setState({launched: true});
           }
@@ -141,9 +140,7 @@ class Simon extends Component {
             }]}
           ]}
         >
-          <View style={styles.gameOverModal}>
-            <Text>{'GameOver'}</Text>
-          </View>
+          <GameOver />
         </Animated.View>
       </View>
     );
@@ -151,14 +148,6 @@ class Simon extends Component {
 }
 
 const styles = StyleSheet.create({
-  gameOverModal: {
-    width: '70%',
-    height: '70%',
-    backgroundColor: Colors['backgroundColor'],
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   gameOverModalWrapper: {
     width: '100%',
     height: '100%',
