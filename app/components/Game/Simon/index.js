@@ -68,7 +68,9 @@ class Simon extends Component {
   gameOver() {
     Animated.spring(this.gameOverAnimation, {
       toValue: 1,
-      useNativeDriver: true
+      useNativeDriver: true,
+      bounciness: 15,
+      speed: 7
     }).start();
     this.setState({launched: false});
   }
