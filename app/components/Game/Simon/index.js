@@ -47,6 +47,11 @@ class Simon extends Component {
     }
   }
 
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    this.props.resetPressed();
+  }
+
   checkTiles(tiles) {
     let error = false;
     tiles.map((tile, index) => {
