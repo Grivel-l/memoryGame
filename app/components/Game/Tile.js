@@ -54,7 +54,6 @@ class Tile extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.highlight && nextProps.highlight) {
-      console.log('Turn on tile');
       this.highlighted = true;
       if (this.props.animationType === 'TURN' || this.props.animationType === 'LIGHT') {
         this.setState({style: {backgroundColor: Colors['highlightColor']}}, () => {

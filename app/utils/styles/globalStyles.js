@@ -1,4 +1,5 @@
 import Colors from './Colors';
+import Margins from './Margins';
 
 export default {
   wrapper: {
@@ -9,7 +10,7 @@ export default {
   },
   gameWrapper: {
     flex: 1,
-    padding: 10,
+    padding: Margins['gameWrapper'],
     flexDirection: 'row'
   }
 };

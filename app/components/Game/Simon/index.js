@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
 import {
   View,
-  Text
+  Text,
+  StyleSheet,
+  Animated,
+  Dimensions
 } from 'react-native';
 // import _ from 'lodash';
 
 import GlobalStyle from '../../../utils/styles/globalStyles';
 import getHighlights from '../../../utils/getHighlights';
 import RenderTiles from '../RenderTiles';
+import Margins from '../../../utils/styles/Margins';
+import Colors from '../../../utils/styles/Colors';
 
+const {height} = Dimensions.get('window');
 class Simon extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +27,7 @@ class Simon extends Component {
     this.level = 1;
     this.pressedTiles = [];
     this.highlightsTiles = [];
+    this.gameOverAnimation = new Animated.Value(0);
 
     this.beginGame = this.beginGame.bind(this);
   }
@@ -50,15 +57,20 @@ class Simon extends Component {
     });
 
     if (error) {
-      console.log('Error', error);
+      this.gameOver();
     } else {
       if (this.highlightsTiles.length === tiles.length) {
         this.nextLevel();
-      } else {
-        console.log('this.state.highlights', this.state.highlights);
-        console.log('Tiles', tiles);
       }
     }
+  }
+
+  gameOver() {
+    Animated.spring(this.gameOverAnimation, {
+      toValue: 1,
+      useNativeDriver: true
+    }).start();
+    this.setState({launched: false});
   }
 
   nextLevel() {
@@ -116,9 +128,45 @@ class Simon extends Component {
       <View style={GlobalStyle.gameWrapper}>
         {this.renderTiles()}
         {this.renderText()}
+        <Animated.View
+          style={[
+            styles.gameOverModalWrapper,
+            {transform: [{
+              translateY: this.gameOverAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, height]
+              })
+            }]}
+          ]}
+        >
+          <View style={styles.gameOverModal}>
+            <Text>{'GameOver'}</Text>
+          </View>
+        </Animated.View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  gameOverModal: {
+    width: '70%',
+    height: '70%',
+    backgroundColor: Colors['backgroundColor'],
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  gameOverModalWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: -height,
+    left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: Margins['gameWrapper']
+  }
+});
 
 export default Simon;
