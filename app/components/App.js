@@ -25,6 +25,13 @@ class App extends Component {
     this.changeGridSize = this.changeGridSize.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.redirection === null && nextProps.redirection !== null) {
+      this.setState({begin: false});
+      this.props.resetRedirect();
+    }
+  }
+
   beginGame(gameMode) {
     this.setState({begin: gameMode});
   }
@@ -56,17 +63,17 @@ class App extends Component {
           <View style={styles.buttonWrapper}>
             <TouchableHighlight
               onPress={() => this.beginGame('MEMORY')}
-              style={styles.button}
+              style={GlobalStyles.button}
             >
-              <Text style={styles.buttonText}>{'Memory game'}</Text>
+              <Text style={GlobalStyles.buttonText}>{'Memory game'}</Text>
             </TouchableHighlight>
           </View>
           <View style={[styles.buttonWrapper, styles.disabled]}>
             <TouchableHighlight
               // onPress={() => this.beginGame('RAPIDITY')}
-              style={styles.button}
+              style={GlobalStyles.button}
             >
-              <Text style={styles.buttonText}>{'Rapidity game'}</Text>
+              <Text style={GlobalStyles.buttonText}>{'Rapidity game'}</Text>
             </TouchableHighlight>
             <TouchableHighlight
               // onPress={this.changeGridSize}
@@ -79,9 +86,9 @@ class App extends Component {
           <View style={styles.buttonWrapper}>
             <TouchableHighlight
               onPress={() => this.beginGame('SIMON')}
-              style={styles.button}
+              style={GlobalStyles.button}
             >
-              <Text style={styles.buttonText}>{'Simon game'}</Text>
+              <Text style={GlobalStyles.buttonText}>{'Simon game'}</Text>
             </TouchableHighlight>
             <TouchableHighlight
               onPress={this.changeGridSize}
@@ -106,18 +113,6 @@ class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: Colors['tilesColor'],
-    padding: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderRadius: 5
-  },
-  buttonText: {
-    fontSize: 40,
-    textAlign: 'center',
-    fontWeight: 'bold'
-  },
   buttonWrapper: {
     margin: 10,
     alignItems: 'center'
