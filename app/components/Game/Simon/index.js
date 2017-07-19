@@ -3,7 +3,7 @@ import {
   View,
   Text
 } from 'react-native';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import GlobalStyle from '../../../utils/styles/globalStyles';
 import getHighlights from '../../../utils/getHighlights';
@@ -43,8 +43,8 @@ class Simon extends Component {
 
   checkTiles(tiles) {
     let error = false;
-    tiles.map(tile => {
-      if (_.find(Object.keys(this.state.highlights), key => key === tile) === undefined) {
+    tiles.map((tile, index) => {
+      if (tile !== this.highlightsTiles[index]) {
         error = true;
       }
     });
@@ -52,7 +52,7 @@ class Simon extends Component {
     if (error) {
       console.log('Error', error);
     } else {
-      if (Object.keys(this.state.highlights).length === tiles.length) {
+      if (this.highlightsTiles.length === tiles.length) {
         this.nextLevel();
       } else {
         console.log('this.state.highlights', this.state.highlights);
