@@ -54,14 +54,15 @@ class Tile extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.highlight && nextProps.highlight) {
+      console.log('Turn on tile');
       this.highlighted = true;
-      if (this.props.animationType === 'TURN') {
+      if (this.props.animationType === 'TURN' || this.props.animationType === 'LIGHT') {
         this.setState({style: {backgroundColor: Colors['highlightColor']}}, () => {
           setTimeout(() => {
             this.setState({style: {}})
           }, HIGHLIGHT_DURATION);
         })
-      } else {
+      } else if (this.props.animationType === 'GROW') {
         this.animationStyle = {
           transform: [{
             scale: this.animation.interpolate({
@@ -111,13 +112,12 @@ class Tile extends Component {
       return null;
     }
 
-    this.pressed = true;
+    if (this.props.animationType !== 'LIGHT') {
+      this.pressed = true;
+    }
+
     if (this.props.animationType === 'TURN') {
-      if (this.props.highlight) {
-        this.setState({style: {backgroundColor: Colors['highlightColor']}});
-      } else {
-        this.setState({style: {backgroundColor: Colors['wrongResponse']}});
-      }
+      this.setState({style: {backgroundColor: Colors[this.props.highlight ? 'highlightColor' : 'wrongResponse']}});
 
       Animated.spring(this.animation, {
           toValue: 1,
@@ -125,7 +125,7 @@ class Tile extends Component {
         }
       ).start();
       this.props.tilePressed(this.props.id);
-    } else {
+    } else if (this.props.animationType === 'GROW') {
       if (this.props.highlight) {
         this.animatedAnimation.stop();
         Animated.spring(this.animation, {
@@ -133,6 +133,8 @@ class Tile extends Component {
           useNativeDriver: true
         }).start(() => this.reset(false));
       }
+    } else if (this.props.animationType === 'LIGHT') {
+      this.props.tilePressed(this.props.id);
     }
   }
 
@@ -140,13 +142,14 @@ class Tile extends Component {
     return (
       <TouchableHighlight
         onPress={this.tilePressed}
-        style={{flex: 1}}
-        underlayColor={'transparent'}
+        style={{flex: 1, margin: 5, borderRadius: 5}}
+        underlayColor={this.props.animationType === 'LIGHT' ? Colors['highlightColor'] : 'transparent'}
       >
         <Animated.View
           style={[
             styles.wrapper,
-            this.props.animationType === 'TURN' && [this.state.style, this.animationStyle]
+            this.state.style,
+            this.props.animationType === 'TURN' && this.animationStyle
           ]}
         >
           {this.props.animationType === 'GROW' && this.highlighted &&
@@ -171,7 +174,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     borderRadius: 5,
-    margin: 5
   },
   growAnimation: {
     backgroundColor: Colors['highlightColor'],
