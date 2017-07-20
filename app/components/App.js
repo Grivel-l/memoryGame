@@ -9,6 +9,7 @@ import {
 import GlobalStyles from '../utils/styles/globalStyles';
 import Memory from '../containers/Game/Memory/index';
 import Rapidity from '../containers/Game/Rapidity/index';
+import Simon from '../containers/Game/Simon/index';
 import Colors from '../utils/styles/Colors';
 
 class App extends Component {
@@ -24,12 +25,27 @@ class App extends Component {
     this.changeGridSize = this.changeGridSize.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.redirection === null && nextProps.redirection !== null) {
+      this.setState({begin: false});
+      this.props.resetRedirect();
+    }
+  }
+
   beginGame(gameMode) {
     this.setState({begin: gameMode});
   }
 
   renderGame() {
-    return this.state.begin === 'MEMORY' ? <Memory /> : <Rapidity gridSize={this.state.gridSize} />;
+    if (this.state.begin === 'MEMORY') {
+      return <Memory />;
+    } else if (this.state.begin === 'RAPIDITY') {
+      return <Rapidity gridSize={this.state.gridSize} />;
+    } else if (this.state.begin === 'SIMON') {
+      return <Simon gridSize={this.state.gridSize} />;
+    }
+
+    return <View />
   }
 
   changeGridSize() {
@@ -47,20 +63,35 @@ class App extends Component {
           <View style={styles.buttonWrapper}>
             <TouchableHighlight
               onPress={() => this.beginGame('MEMORY')}
-              style={styles.button}
+              style={GlobalStyles.button}
             >
-              <Text style={styles.buttonText}>{'Memory game'}</Text>
+              <Text style={GlobalStyles.buttonText}>{'Memory game'}</Text>
             </TouchableHighlight>
           </View>
           <View style={[styles.buttonWrapper, styles.disabled]}>
             <TouchableHighlight
               // onPress={() => this.beginGame('RAPIDITY')}
-              style={styles.button}
+              style={GlobalStyles.button}
             >
-              <Text style={styles.buttonText}>{'Rapidity game'}</Text>
+              <Text style={GlobalStyles.buttonText}>{'Rapidity game'}</Text>
             </TouchableHighlight>
             <TouchableHighlight
               // onPress={this.changeGridSize}
+              style={styles.subTextWrapper}
+              underlayColor={Colors['tilesColor']}
+            >
+              <Text style={styles.subText}>{`Grid size: ${this.state.gridSize}x${this.state.gridSize}`}</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.buttonWrapper}>
+            <TouchableHighlight
+              onPress={() => this.beginGame('SIMON')}
+              style={GlobalStyles.button}
+            >
+              <Text style={GlobalStyles.buttonText}>{'Simon game'}</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.changeGridSize}
               style={styles.subTextWrapper}
               underlayColor={Colors['tilesColor']}
             >
@@ -82,18 +113,6 @@ class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: Colors['tilesColor'],
-    padding: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderRadius: 5
-  },
-  buttonText: {
-    fontSize: 40,
-    textAlign: 'center',
-    fontWeight: 'bold'
-  },
   buttonWrapper: {
     margin: 10,
     alignItems: 'center'

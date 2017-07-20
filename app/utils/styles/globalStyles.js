@@ -1,4 +1,5 @@
 import Colors from './Colors';
+import Margins from './Margins';
 
 export default {
   wrapper: {
@@ -9,7 +10,19 @@ export default {
   },
   gameWrapper: {
     flex: 1,
-    padding: 10,
+    padding: Margins['gameWrapper'],
     flexDirection: 'row'
+  },
+  button: {
+    backgroundColor: Colors['tilesColor'],
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 5
+  },
+  buttonText: {
+    fontSize: 40,
+    textAlign: 'center',
+    fontWeight: 'bold'
   }
 };
