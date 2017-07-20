@@ -12,6 +12,7 @@ import getHighlights from '../../../utils/getHighlights';
 import RenderTiles from '../RenderTiles';
 import Margins from '../../../utils/styles/Margins';
 import GameOver from '../../../containers/Game/gameOver';
+import {getRandomNbr} from '../../../utils/getHighlights';
 
 const {height} = Dimensions.get('window');
 class Simon extends Component {
@@ -25,11 +26,20 @@ class Simon extends Component {
     };
 
     this.level = 1;
+    this.colors = [];
     this.pressedTiles = [];
     this.highlightsTiles = [];
     this.gameOverAnimation = new Animated.Value(0);
 
     this.beginGame = this.beginGame.bind(this);
+  }
+
+  componentWillMount() {
+    for (let i = 0; i < this.props.gridSize; i += 1) {
+      for (let j = 0; j < this.props.gridSize; j += 1) {
+        this.colors.push(`rgba(${getRandomNbr(0, 255)}, ${getRandomNbr(0, 255)}, ${getRandomNbr(0, 255)}, 0.2)`);   
+      }
+    }
   }
 
   componentDidMount() {
@@ -121,6 +131,7 @@ class Simon extends Component {
         highlights={this.state.highlights}
         launched={this.state.launched}
         animationType={'LIGHT'}
+        colors={this.colors}
       />
     );
   }

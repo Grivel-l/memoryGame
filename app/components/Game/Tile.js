@@ -56,7 +56,7 @@ class Tile extends Component {
     if (!this.props.highlight && nextProps.highlight) {
       this.highlighted = true;
       if (this.props.animationType === 'TURN' || this.props.animationType === 'LIGHT') {
-        this.setState({style: {backgroundColor: Colors['highlightColor']}}, () => {
+        this.setState({style: {backgroundColor: this.props.animationType === 'LIGHT' ? this.props.color.replace('0.2', '1') : Colors['highlightColor']}}, () => {
           setTimeout(() => {
             this.setState({style: {}})
           }, HIGHLIGHT_DURATION);
@@ -142,10 +142,11 @@ class Tile extends Component {
       <TouchableHighlight
         onPress={this.tilePressed}
         style={{flex: 1, margin: 5, borderRadius: 5}}
-        underlayColor={this.props.animationType === 'LIGHT' ? Colors['highlightColor'] : 'transparent'}
+        underlayColor={this.props.animationType === 'LIGHT' ? this.props.color.replace('0.2', '1') : 'transparent'}
       >
         <Animated.View
           style={[
+            {backgroundColor: this.props.color || Colors['tilesColor']},
             styles.wrapper,
             this.state.style,
             this.props.animationType === 'TURN' && this.animationStyle
@@ -169,7 +170,6 @@ class Tile extends Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: Colors['tilesColor'],
     flex: 1,
     alignSelf: 'stretch',
     borderRadius: 5,
