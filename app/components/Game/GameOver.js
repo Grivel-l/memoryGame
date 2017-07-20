@@ -13,9 +13,12 @@ class GameOver extends Component {
   render() {
     return (
       <View style={styles.gameOverModal}>
-        <Text>{'GameOver'}</Text>
+        <Text style={styles.title}>{'GameOver'}</Text>
+        <View style={styles.bodyContent}>
+          <Text style={styles.score}>{`Your score: ${this.props.score}`}</Text>
+        </View>
         <TouchableHighlight
-          style={GlobalStyles.button}
+          style={[GlobalStyles.button, styles.button]}
           onPress={() => {
             this.props.redirect('MAIN_MENU');
           }}
@@ -34,7 +37,23 @@ const styles = StyleSheet.create({
     backgroundColor: Colors['backgroundColor'],
     borderRadius: 10,
     alignItems: 'center',
+    elevation: 10
+  },
+  title: {
+    fontSize: 30,
+    marginTop: 15
+  },
+  bodyContent: {
+    flex: 1,
     justifyContent: 'center'
+  },
+  score: {
+    fontSize: 30,
+    marginBottom: 15,
+    fontWeight: 'bold'
+  },
+  button: {
+    marginBottom: 15
   }
 });
 

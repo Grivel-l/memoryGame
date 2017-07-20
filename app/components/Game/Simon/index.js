@@ -20,7 +20,8 @@ class Simon extends Component {
 
     this.state = {
       highlights: [],
-      launched: false
+      launched: false,
+      score: 0
     };
 
     this.level = 1;
@@ -48,7 +49,6 @@ class Simon extends Component {
   }
 
   componentWillUnmount() {
-    console.log('Component will unmount');
     this.props.resetPressed();
   }
 
@@ -70,13 +70,13 @@ class Simon extends Component {
   }
 
   gameOver() {
+    this.setState({launched: false, score: this.level});
     Animated.spring(this.gameOverAnimation, {
       toValue: 1,
       useNativeDriver: true,
       bounciness: 15,
       speed: 7
     }).start();
-    this.setState({launched: false});
   }
 
   nextLevel() {
@@ -145,7 +145,7 @@ class Simon extends Component {
             }]}
           ]}
         >
-          <GameOver />
+          <GameOver score={this.state.score} />
         </Animated.View>
       </View>
     );
