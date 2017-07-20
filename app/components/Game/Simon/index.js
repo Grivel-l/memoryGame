@@ -37,7 +37,7 @@ class Simon extends Component {
   componentWillMount() {
     for (let i = 0; i < this.props.gridSize; i += 1) {
       for (let j = 0; j < this.props.gridSize; j += 1) {
-        this.colors.push(`rgba(${getRandomNbr(0, 255)}, ${getRandomNbr(0, 255)}, ${getRandomNbr(0, 255)}, 0.2)`);   
+        this.colors.push(`rgba(${getRandomNbr(0, 200)}, ${getRandomNbr(0, 200)}, ${getRandomNbr(0, 200)}, 0.2)`);   
       }
     }
   }
