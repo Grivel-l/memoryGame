@@ -136,15 +136,10 @@ class Simon extends Component {
     );
   }
 
-  renderText() {
-    return <View />;
-  }
-
   render() {
     return (
       <View style={GlobalStyle.gameWrapper}>
         {this.renderTiles()}
-        {this.renderText()}
         <Animated.View
           style={[
             styles.gameOverModalWrapper,
